@@ -1,4 +1,5 @@
 discord.py
+logging.py
 aiohttp
 websockets
 chardet
