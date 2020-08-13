@@ -1,0 +1,5 @@
+WARNING:discord.client:PyNaCl is not installed, voice will NOT be supported
+INFO:discord.client:logging in using static token
+INFO:discord.gateway:Shard ID None has sent the IDENTIFY payload.
+INFO:discord.gateway:Shard ID None has connected to Gateway: ["gateway-prd-main-9m95",{"micros":49575,"calls":["discord-sessions-prd-2-38",{"micros":39167,"calls":["start_session",{"micros":37207,"calls":["api-prd-main-5dr5",{"micros":34363,"calls":["get_user",{"micros":2830},"add_authorized_ip",{"micros":1752},"get_guilds",{"micros":5195},"coros_wait",{"micros":2}]}]},"guilds_connect",{"micros":1,"calls":[]},"presence_connect",{"micros":0,"calls":[]}]}]}] (Session ID: bc7d373ef31a505da46c759ae7be5954).
+INFO:root:Bot logged as Gaben#8913
