@@ -14,7 +14,7 @@ import discord
 from discord.ext import commands
 
 token = ''
-client_id = 702107949421822104
+client_id = ''
 
 bot = commands.Bot(command_prefix='.')
 bot.remove_command('help')
