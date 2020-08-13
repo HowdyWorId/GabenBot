@@ -13,6 +13,7 @@ admins = ['TheBeST#5143', 'C.O.D.E.X#5794',]
 import discord
 from discord.ext import commands
 
+
 bot = commands.Bot(command_prefix='.')
 bot.remove_command('help')
 
