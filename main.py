@@ -52,5 +52,6 @@ async def clear(ctx, amount=10):
     else: await ctx.channel.send('{0.author.mention} Иди нах :)'.format(ctx.message))
 
 
-# bot.run(token)
+
 token = os.environ.get('BOT_TOKEN')
+bot.run(token)
