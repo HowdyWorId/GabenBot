@@ -21,7 +21,7 @@ bot.remove_command('help')
 
 @bot.event
 async def on_ready():
-    await client.change_presence(game = discord.Game(name = 'Robbery of Schoolchildren'))
+    await bot.change_presence(game = discord.Game(name = 'Robbery of Schoolchildren'))
     print('Bot logged as {}'.format(bot.user))
 
 
