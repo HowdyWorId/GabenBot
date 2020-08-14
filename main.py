@@ -22,7 +22,7 @@ bot.remove_command('help')
 @bot.event
 async def on_ready():
     # await bot.change_presence(game = discord.Game(name = 'Robbery of Schoolchildren'))
-    await bot.user.setPresence({ game: { name: 'with depression', type: "streaming", url: "https://www.twitch.tv/monstercat"}});
+    await bot.user.setActivity('YouTube', { type: 'WATCHING' });
     print('Bot logged as {}'.format(bot.user))
 
 
