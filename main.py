@@ -22,6 +22,14 @@ async def on_ready():
     print('Bot logged as {}'.format(bot.user))
 
 @bot.event
+async def on_member_join(member):
+    phrases = ['У нас новый чел {0.mention}.', 'К нам присоединился {0.mention}', 'Приветствуем тебя, {0.mention}', ]
+    channel = bot.get_channel(660210563342794824)
+    r = random.randint(0,len(phrases)-1)
+
+    await channel.send(str(phrases[r]).format(member))
+   
+@bot.event
 async def on_message(message):
     print(f'INFO:{message.author} send "{message.content}" to channel "{message.channel}"')
     msg = message.content.lower()
