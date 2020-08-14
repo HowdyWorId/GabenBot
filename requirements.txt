@@ -1,4 +1,5 @@
 discord.py
+random.py
 logging.py
 aiohttp
 websockets
