@@ -1,6 +1,5 @@
 discord.py
 logging.py
-random.py
 aiohttp
 websockets
 chardet
