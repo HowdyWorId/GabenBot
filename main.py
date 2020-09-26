@@ -68,4 +68,3 @@ async def clear(ctx, amount=10):
 
 token = os.environ.get('BOT_TOKEN')
 bot.run(token)
-
