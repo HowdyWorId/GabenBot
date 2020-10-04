@@ -1,7 +1,7 @@
 discord.py
 logging.py
 requests
-re
+regex
 bs4
 asyncio
 aiohttp
