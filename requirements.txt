@@ -1,5 +1,9 @@
 discord.py
 logging.py
+requests
+re
+bs4
+asyncio
 aiohttp
 websockets
 chardet
