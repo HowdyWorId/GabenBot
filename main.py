@@ -3,6 +3,9 @@
 import logging
 import os
 import random
+import asyncio
+import requests, re
+from bs4 import BeautifulSoup, SoupStrainer
 
 logging.basicConfig(filename="logs.log", level=logging.INFO, filemode='w')
 log_message = logging.getLogger('messsage')
@@ -17,6 +20,51 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix='.')
 bot.remove_command('help')
+
+async def background_task():
+    urls = ['https://vk.com/oryslenti','https://vk.com/public171746659', 'https://vk.com/fails66','https://vk.com/nestandartniememi','https://vk.com/willscary','https://vk.com/chlgpro','https://vk.com/shkolkrim']
+    def meme_generator(urls: list = urls):
+        lst = []
+        for url in urls:
+            r = requests.get(url)  # /photo-171746659_457350338?list=wall-171746659_1801160&amp
+            soup = BeautifulSoup(r.content, 'html.parser',
+                                 parse_only=SoupStrainer('div'))  # ,parse_only=SoupStrainer('a')
+            # print(soup)
+
+            try:
+                convert = soup.find_all('div', {'class': "wi_body wi_no_text"})
+                if convert == []:
+                    print(f'cant parse to {url}')
+                    raise IndexError
+                for el in convert:
+                    jpg = [i[1:-1] for i in re.findall(r'url(.*?);', str(el))]
+                    lst.append(['', jpg])
+
+            except IndexError:
+                convert = soup.find_all('div', {'class': 'wi_body'})
+                for el in convert:
+                    jpg = [i[1:-1] for i in re.findall(r'url(.*?);', str(el))]
+                    text = re.findall(r'<div class="pi_text">(.*?)</div>', str(el))[0]
+                    if len(jpg) < 2:
+                        lst.append([text, jpg])
+
+        return lst
+
+    await bot.wait_until_ready()
+    # channel = discord.Object(id=761600162501754910)
+    channel = bot.get_channel(761600162501754910)
+    if bot.is_closed:
+        memes = meme_generator()
+        memes = [ memes[random.randint(0,len(memes)-1)] for _ in range(0,5) ]
+        # memes = list(set(memes))
+        # print(memes)
+        for meme in memes:
+            await channel.send(f'{meme[0]}\n {" ".join(meme[1])}')
+        await asyncio.sleep(36000)
+        await background_task()
+    else:
+        print('bot is closed')
+
 
 
 @bot.event
@@ -66,5 +114,7 @@ async def clear(ctx, amount=10):
     else:
         await ctx.channel.send('{0.author.mention} Иди нах :)'.format(ctx.message))
 
+
+bot.loop.create_task(background_task())
 token = os.environ.get('BOT_TOKEN')
 bot.run(token)
