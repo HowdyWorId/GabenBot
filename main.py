@@ -12,7 +12,7 @@ log_message = logging.getLogger('messsage')
 osk = ['даун', 'бот даун', 'ты даун', 'довн']
 ban_prefix = ['-', '#', ['!zt']]
 protect_channel = ['общение', 'meme', 'ссылки', 'получение-ролей']
-black_list = ['напердел#5157', 'Groovy#7254', 'ProBot ✨#5803', ]
+black_list = ['TeeSey#5157', 'Groovy#7254', 'ProBot ✨#5803', ]
 admins = ['TheBeST#5143', 'C.O.D.E.X#5794', ]
 
 import discord
