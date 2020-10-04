@@ -51,8 +51,7 @@ async def background_task():
         return lst
 
     await bot.wait_until_ready()
-    # channel = discord.Object(id=761600162501754910)
-    channel = bot.get_channel(761600162501754910)
+    channel = bot.get_channel(os.environ.get('MEME_CHANNEL'))
     if bot.is_closed:
         memes = meme_generator()
         memes = [ memes[random.randint(0,len(memes)-1)] for _ in range(0,5) ]
