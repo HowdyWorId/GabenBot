@@ -1,6 +1,6 @@
 discord.py
 logging.py
-requests
+requests.py
 re
 bs4
 asyncio
