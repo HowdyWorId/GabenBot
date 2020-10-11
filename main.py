@@ -59,7 +59,7 @@ class Meme:
         return Meme(urls=urls)
 
 
-async def background_task():
+async def background_task(bool=True):
     m = Meme().memes
     await bot.wait_until_ready()
     channel = bot.get_channel(764760007681900574)
@@ -71,7 +71,9 @@ async def background_task():
         for meme in memes:
             await channel.send(f'{meme[0]}\n {"".join(meme[1])}')
         await asyncio.sleep(random.randint(1000,40000))
-        await background_task()
+        # await asyncio.sleep(random.randint(5,10))
+        if bool:
+            await background_task()
     else:
         print('bot is closed')
 
@@ -124,7 +126,14 @@ async def clear(ctx, amount=10):
     else:
         await ctx.channel.send('{0.author.mention} Иди нах :)'.format(ctx.message))
 
+@bot.command(pass_context=True)
+async def meme(ctx):
+    user = str(ctx.message.author)
+    if user in admins:
+        await background_task(False)
+
+
 
 meme_task = bot.loop.create_task(background_task())
-token = os.environ.get('BOT_TOKEN')
+token = 'NzAyMTA3OTQ5NDIxODIyMTA0.Xp7O-w.BWZ1bPX7nyzYIw7juq9O9t1-RgU'
 bot.run(token)
