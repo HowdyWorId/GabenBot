@@ -135,5 +135,5 @@ async def meme(ctx):
 
 
 meme_task = bot.loop.create_task(background_task())
-token = 'NzAyMTA3OTQ5NDIxODIyMTA0.Xp7O-w.BWZ1bPX7nyzYIw7juq9O9t1-RgU'
+token = os.environ('BOT_TOKEN')
 bot.run(token)
