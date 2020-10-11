@@ -62,8 +62,8 @@ class Meme:
 async def background_task():
     m = Meme().memes
     await bot.wait_until_ready()
-    # channel = bot.get_channel(701437053593714720)
-    channel = bot.get_channel(761600162501754910)
+    channel = bot.get_channel(701437053593714720)
+    # channel = bot.get_channel(761600162501754910)
     if bot.is_closed:
         r = random.randint(0,len(m)-1)
         memes = [m[r]['meme']]
