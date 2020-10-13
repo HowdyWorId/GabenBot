@@ -130,6 +130,7 @@ async def clear(ctx, amount=10):
 async def meme(ctx):
     user = str(ctx.message.author)
     if user in admins:
+        await ctx.channel.purge(limit=1)
         await background_task(False)
 
 
