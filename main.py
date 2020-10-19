@@ -19,7 +19,7 @@ pubs = ['https://vk.com/oryslenti', 'https://vk.com/public171746659',
 
 bot = commands.Bot(command_prefix='.')
 bot.remove_command('help')
-TOKEN = 'NzAyMTA3OTQ5NDIxODIyMTA0.Xp7O-w.qJt1IK172ORk2Wwz7DyB2As5sVg'
+TOKEN = os.environ.get('BOT_TOKEN')
 
 
 class Meme:
@@ -74,8 +74,8 @@ pubs = {'https://vk.com/oryslenti', 'https://vk.com/public171746659',
 async def background_task(bool=True):
     await bot.wait_until_ready()
     m = Meme(pubs).memes
-    channel = bot.get_channel(764760007681900574)
-#     channel = bot.get_channel(761600162501754910)
+    # channel = bot.get_channel(764760007681900574)
+    channel = bot.get_channel(761600162501754910)
     if bot.is_closed:
         r = random.randint(0, len(m) - 1)
         memes = [m[r]['meme']]
