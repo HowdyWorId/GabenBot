@@ -74,8 +74,8 @@ pubs = {'https://vk.com/oryslenti', 'https://vk.com/public171746659',
 async def background_task(bool=True):
     await bot.wait_until_ready()
     m = Meme(pubs).memes
-    # channel = bot.get_channel(764760007681900574)
-    channel = bot.get_channel(761600162501754910)
+    channel = bot.get_channel(764760007681900574)
+#     channel = bot.get_channel(761600162501754910)
     if bot.is_closed:
         r = random.randint(0, len(m) - 1)
         memes = [m[r]['meme']]
@@ -107,7 +107,7 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(member):
-    phrases = ['У нас новый чел {0.mention}.', 'К нам присоединился {0.mention}', 'Приветствуем тебя, {0.mention}', ]
+    phrases = ['У нас новый чел {0.mention}.', 'К нам присоединился, {0.mention}', 'Приветствуем тебя, {0.mention}', ]
     channel = bot.get_channel(660210563342794824)
     r = random.randint(0, len(phrases) - 1)
     await channel.send(str(phrases[r]).format(member))
@@ -115,6 +115,7 @@ async def on_member_join(member):
 
 @bot.event
 async def on_message(message):
+    print(f'INFO:{message.author} send "{message.content}" to channel "{message.channel}"')
     msg = message.content.lower()
     if str(message.author) not in black_list:
         await bot.process_commands(message)
