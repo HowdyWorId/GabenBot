@@ -4,29 +4,29 @@ import random
 import asyncio
 import requests, re
 from bs4 import BeautifulSoup, SoupStrainer
+import discord
+from discord.ext import commands
 
-logging.basicConfig(filename="logs.log", level=logging.INFO, filemode='w')
-log_message = logging.getLogger('messsage')
-osk = ['даун', 'бот даун', 'ты даун', 'довн']
+osk = ['']
 ban_prefix = ['-', '#', ['!zt']]
 protect_channel = ['общение', 'meme', 'ссылки', 'получение-ролей']
 black_list = ['TeeSey#5157', 'Groovy#7254', 'ProBot ✨#5803', ]
 admins = ['TheBeST#5143', 'C.O.D.E.X#5794', ]
-
-import discord
-from discord.ext import commands
+muted_members = []
+pubs = ['https://vk.com/oryslenti', 'https://vk.com/public171746659',
+        'https://vk.com/nestandartniememi', 'https://vk.com/chlgpro',
+        'https://vk.com/shkolkrim']
 
 bot = commands.Bot(command_prefix='.')
 bot.remove_command('help')
+TOKEN = 'NzAyMTA3OTQ5NDIxODIyMTA0.Xp7O-w.qJt1IK172ORk2Wwz7DyB2As5sVg'
+
 
 class Meme:
-    def __init__(self, urls=['https://vk.com/oryslenti', 'https://vk.com/public171746659',
-        'https://vk.com/nestandartniememi', 'https://vk.com/chlgpro',
-        'https://vk.com/shkolkrim']):
+    def __init__(self, urls):
         self.__urls = urls
+        self.__problem_publics = []
         self.__memes = self.meme_generator()
-        # print(self.__memes)
-
 
     def meme_generator(self):
         d = []
@@ -40,44 +40,63 @@ class Meme:
                 for el in convert[1:]:
                     rel = re.findall(r'url(.*?);', str(el))
                     if len(rel) == 1:
-                        d.append({'public':url, 'meme':['',rel[0][1:-1]],})
+                        meme_url = rel[0][1:-1]
+                        if 'jpg?' not in meme_url:
+                            d.append({'public': url, 'meme': ['', meme_url]})
+                        else:
+                            print('raising Exception')
+                            raise Exception
+
             except Exception:
-                print(f'cant parse to {url}')
+                print(f"can't parse to  {url}")
+                self.__problem_publics.append(url)
                 continue
         return d
 
     @property
-    def publics(self):
+    def problem_publics(self):
+        return list(set(self.__problem_publics))
+
+    @property
+    def current_publics(self):
         return self.__urls
 
     @property
     def memes(self):
         return self.__memes
 
-    @staticmethod
-    def new_urls(urls):
-        return Meme(urls=urls)
+
+pubs = {'https://vk.com/oryslenti', 'https://vk.com/public171746659',
+        'https://vk.com/nestandartniememi', 'https://vk.com/chlgpro',
+        'https://vk.com/shkolkrim'}
 
 
 async def background_task(bool=True):
-    m = Meme().memes
     await bot.wait_until_ready()
-    channel = bot.get_channel(764760007681900574)
-    # channel = bot.get_channel(761600162501754910)
+    m = Meme(pubs).memes
+    # channel = bot.get_channel(764760007681900574)
+    channel = bot.get_channel(761600162501754910)
     if bot.is_closed:
-        r = random.randint(0,len(m)-1)
+        r = random.randint(0, len(m) - 1)
         memes = [m[r]['meme']]
-        print(memes)
         for meme in memes:
             await channel.send(f'{meme[0]}\n {"".join(meme[1])}')
-        await asyncio.sleep(random.randint(1000,40000))
-        # await asyncio.sleep(random.randint(5,10))
+        await asyncio.sleep(random.randint(1000, 40000))
         if bool:
             await background_task()
     else:
         print('bot is closed')
 
 
+async def mute_members(member, time=120, reason=''):
+    role = discord.utils.get(member.guild.roles, name='Muted')
+    muted_members.append(member.author)
+    index = muted_members.index(member.author)
+    await member.author.add_roles(role)
+    await member.author.send('Отдохни дружок, чаяку выпей.Тебя замутили на %s сек :)' % time)
+    await asyncio.sleep(time)
+    await member.author.remove_roles(role)
+    muted_members.pop(index)
 
 @bot.event
 async def on_ready():
@@ -96,7 +115,6 @@ async def on_member_join(member):
 
 @bot.event
 async def on_message(message):
-    print(f'INFO:{message.author} send "{message.content}" to channel "{message.channel}"')
     msg = message.content.lower()
     if str(message.author) not in black_list:
         await bot.process_commands(message)
@@ -116,6 +134,25 @@ async def on_message(message):
             if str(message.channel).lower() in protect_channel:
                 print(f'INFO:delete "{message.content}" in channel "{message.channel}"')
                 await message.channel.purge(limit=1)
+    # AntiSPAM
+    messages = list(bot.cached_messages)
+    if not message.author.bot and message.author not in muted_members:
+        if len(messages) > 5:
+
+            messages_from_5_times = [(messages[-i].created_at - messages[-5].created_at).seconds for i in range(1, 5)]
+            messages_from_5_author = [(messages[-i].author == messages[-5].author) for i in range(1, 5)]
+
+            if sum(messages_from_5_times) < 5 and all(messages_from_5_author):
+                print('spamming')
+                await message.channel.purge(limit=5)
+                await message.channel.send('{0.author.mention} STOP SPAMMING!!!'.format(message)) if message.author not in muted_members else None
+                await mute_members(message, 120)
+
+
+            elif all([messages[-i].content == messages[-1].content for i in range(1,5)]):
+                print('spam 4 duplicates')
+                await message.channel.purge(limit=4)
+                await mute_members(message, 100)
 
 
 @bot.command(pass_context=True)
@@ -126,6 +163,7 @@ async def clear(ctx, amount=10):
     else:
         await ctx.channel.send('{0.author.mention} Иди нах :)'.format(ctx.message))
 
+
 @bot.command(pass_context=True)
 async def meme(ctx):
     user = str(ctx.message.author)
@@ -134,7 +172,5 @@ async def meme(ctx):
         await background_task(False)
 
 
-
 meme_task = bot.loop.create_task(background_task())
-token = os.environ.get('BOT_TOKEN')
-bot.run(token)
+bot.run(TOKEN)
