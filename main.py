@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup, SoupStrainer
 import discord
 from discord.ext import commands
 
-osk = ['']
+osk = ['иди нахуй']
 ban_prefix = ['-', '#', ['!zt']]
 protect_channel = ['общение', 'meme', 'ссылки', 'получение-ролей']
 black_list = ['TeeSey#5157', 'Groovy#7254', 'ProBot ✨#5803', ]
