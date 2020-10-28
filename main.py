@@ -197,4 +197,4 @@ async def pubs(ctx):
 
 
 meme_task = bot.loop.create_task(background_task())
-bot.run(TOKEN)
+bot.run(os.environ.get('BOT_TOKEN'))
