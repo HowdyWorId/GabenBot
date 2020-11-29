@@ -195,5 +195,6 @@ async def pubs(ctx):
         channel = bot.get_channel(761600162501754910)
         await channel.send('```%s```' % '\n'.join(pubs_))
 
-meme_task = bot.loop.create_task(background_task())
 bot.run(os.environ.get('BOT_TOKEN'))
+meme_task = bot.loop.create_task(background_task())
+
