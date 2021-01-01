@@ -1,7 +1,7 @@
 import os
 from discord.ext import commands
 
-with open('lol', 'txt') as f:
+with open('lol.txt', 'r') as f:
     print(f.read())
 # token = 'NzAyMTA3OTQ5NDIxODIyMTA0.Xp7O-w.1Kf5hPD5WmvK3YEc3PKJCU_4uXQ'
 
